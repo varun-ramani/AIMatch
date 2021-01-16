@@ -11,16 +11,15 @@ namespace Game
 
 	class GameBoard
 	{
-		public:
-			GameBoard();
-			virtual ~GameBoard();
+	public:
+		GameBoard();
+		virtual ~GameBoard();
 
-			void Update();
-			void SpawnPlayer();
-			bool IsGameOver() { return false; }
+		void Update();
+		void SpawnWords(std::vector<std::string> words);
+		bool IsGameOver() { return false; }
 
-		private:
-			GameEngine::Entity* m_player;
-
+	private:
+		GameEngine::Entity *m_player;
 	};
 } // namespace Game

@@ -1,6 +1,8 @@
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
 
+#include <vector>
+
 int main()
 {
 	GameEngine::GameEngineMain* mainEngine = GameEngine::GameEngineMain::GetInstance();
