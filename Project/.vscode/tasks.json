@@ -12,6 +12,16 @@
             }
         },
         {
+            "label": "Build and Run",
+            "type": "shell",
+            "command": "make && ./output",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
             "label": "Clean",
             "type": "shell",
             "group": "build",
