@@ -45,7 +45,8 @@ void GameBoard::SpawnWords(std::vector<std::string> words)
         render->SetCharacterSizePixels(20);
         render->SetFont("Bookerly-Regular.ttf");
 
-        std::cout << s;
+        // std::cout << s;
+        // std::cout << "\n";
 
         i++;
     }
@@ -54,6 +55,9 @@ void GameBoard::SpawnWords(std::vector<std::string> words)
     // MakeWall(75.f, 215.f, 130.f, 5.f);
     // MakeWall(15.f, 100.f, 5.f, 200.f);
     MakeWall(150.f, 100.f, 5.f, 500.f);
+
+    // std::cout << sf::Mouse::getPosition().x;
+    // std::cout << "\n";
 }
 
 void GameBoard::MakeWall(float x, float y, float width, float height)
