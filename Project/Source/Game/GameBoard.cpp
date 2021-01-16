@@ -25,15 +25,16 @@ GameBoard::~GameBoard()
 {
 }
 
-void GameBoard::SpawnWords(std::vector<std::string> words)
+void GameBoard::SpawnWords(std::vector<std::string> strs)
 {
     int i = 0;
-    for (int j = 0; j < words.size(); j++)
+    for (int j = 0; j < strs.size(); j++)
     {
-        std::string s = words[j];
+        std::string s = strs[j];
 
         GameEngine::Entity *ent = new GameEngine::Entity();
         GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
+        words.push_back(ent);
 
         ent->SetPos(sf::Vector2f(20.f, 20.f + i * 30));
         ent->SetSize(sf::Vector2f(100.f, 20.f));
@@ -83,9 +84,13 @@ void GameBoard::HandleEvent(sf::Event event)
     case sf::Event::MouseButtonPressed:
         if (event.mouseButton.button == sf::Mouse::Left)
         {
-            std::cout << "the left button was pressed" << std::endl;
-            std::cout << "mouse x: " << event.mouseButton.x << std::endl;
-            std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+            int x = event.mouseButton.x;
+            int y = event.mouseButton.y;
+
+            for (GameEngine::Entity *word : words)
+            {
+                // if ()
+            }
         }
         break;
     case sf::Event::MouseMoved:

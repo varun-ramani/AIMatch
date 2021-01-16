@@ -24,6 +24,7 @@ namespace Game
 		bool IsGameOver() { return false; }
 
 	private:
-		GameEngine::Entity *m_player;
+		std::vector<GameEngine::Entity *> words;
+		GameEngine::Entity *m_dragging;
 	};
 } // namespace Game
