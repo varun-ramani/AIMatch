@@ -3,6 +3,7 @@
 #include <SFML/Main.hpp>
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
@@ -27,16 +28,25 @@ GameBoard::~GameBoard()
 void GameBoard::SpawnWords(std::vector<std::string> words)
 {
     int i = 0;
-    for (std::string s : words)
+    for (int j = 0; j < words.size(); j++)
     {
+        std::string s = words[j];
+
         m_player = new GameEngine::Entity();
         GameEngine::GameEngineMain::GetInstance()->AddEntity(m_player);
 
         m_player->SetPos(sf::Vector2f(50.f, 50.f + i * 60));
-        m_player->SetSize(sf::Vector2f(50.f, 50.f));
+        m_player->SetSize(sf::Vector2f(100.f, 50.f));
 
         GameEngine::TextRenderComponent *render = m_player->AddComponent<GameEngine::TextRenderComponent>();
         render->SetString(s);
+        render->SetColor(sf::Color::White);
+        render->SetFillColor(sf::Color::Black);
+        render->SetCharacterSizePixels(20);
+        render->SetFont("Bookerly-Regular.ttf");
+
+        std::cout << s;
+
         i++;
     }
 }
