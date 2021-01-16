@@ -13,24 +13,6 @@ int main()
 	while (mainEngine->GetRenderWindow()->isOpen())
 	{
 		mainEngine->Update();
-
-		sf::Event event;
-		while (window->pollEvent(event))
-		{
-			switch (event.type)
-			{
-			//mouse events
-			case sf::Event::MouseButtonPressed:
-				break;
-
-			case sf::Event::MouseMoved:
-				break;
-
-			// we don't process other types of events
-			default:
-				break;
-			}
-		}
 	}
 
 	delete mainEngine;

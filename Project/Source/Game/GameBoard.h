@@ -2,6 +2,7 @@
 #include "GameEngine/EntitySystem/Entity.h"
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 #include <vector>
 
 namespace Game
@@ -16,6 +17,8 @@ namespace Game
 		virtual ~GameBoard();
 
 		void Update();
+		void HandleEvent(sf::Event event);
+
 		void SpawnWords(std::vector<std::string> words);
 		void MakeWall(float x, float y, float width, float height);
 		bool IsGameOver() { return false; }

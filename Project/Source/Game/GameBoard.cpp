@@ -75,3 +75,8 @@ void GameBoard::MakeWall(float x, float y, float width, float height)
 void GameBoard::Update()
 {
 }
+
+void GameBoard::HandleEvent(sf::Event event)
+{
+    std::cout << "hi\n";
+}

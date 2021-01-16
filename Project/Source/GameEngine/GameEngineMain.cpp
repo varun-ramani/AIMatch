@@ -14,14 +14,12 @@ using namespace GameEngine;
 float GameEngineMain::WINDOW_HEIGHT = 500;
 float GameEngineMain::WINDOW_WIDTH = 500;
 //Nullptr init for singleton class
-GameEngineMain* GameEngineMain::sm_instance = nullptr;
-sf::Clock		GameEngineMain::sm_deltaTimeClock;
-sf::Clock		GameEngineMain::sm_gameClock;
+GameEngineMain *GameEngineMain::sm_instance = nullptr;
+sf::Clock GameEngineMain::sm_deltaTimeClock;
+sf::Clock GameEngineMain::sm_gameClock;
 
 GameEngineMain::GameEngineMain()
-	: m_renderTarget(nullptr)
-	, m_gameBoard(nullptr)
-	, m_windowInitialised(false)
+	: m_renderTarget(nullptr), m_gameBoard(nullptr), m_windowInitialised(false)
 {
 	CreateAndSetUpWindow();
 	//Load predefined textures
@@ -33,12 +31,10 @@ GameEngineMain::GameEngineMain()
 	CameraManager::GetInstance()->GetCameraView().setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
 }
 
-
 GameEngineMain::~GameEngineMain()
 {
 	delete m_renderTarget;
 }
-
 
 void GameEngineMain::OnInitialised()
 {
@@ -48,15 +44,13 @@ void GameEngineMain::OnInitialised()
 	sm_gameClock.restart();
 }
 
-
 void GameEngineMain::CreateAndSetUpWindow()
 {
 	m_renderWindow = new sf::RenderWindow(sf::VideoMode((unsigned int)WINDOW_WIDTH, (unsigned int)WINDOW_HEIGHT), "Hack The North");
 	m_renderTarget = m_renderWindow;
 }
 
-
-void GameEngineMain::AddEntity(Entity* entity)
+void GameEngineMain::AddEntity(Entity *entity)
 {
 	auto found = std::find(m_entities.begin(), m_entities.end(), entity);
 	assert(found == m_entities.end()); //Drop an assert if we add duplicate;
@@ -66,8 +60,7 @@ void GameEngineMain::AddEntity(Entity* entity)
 	}
 }
 
-
-void GameEngineMain::RemoveEntity(Entity* entity)
+void GameEngineMain::RemoveEntity(Entity *entity)
 {
 	{
 		auto found = std::find(m_entitiesToAdd.begin(), m_entitiesToAdd.end(), entity);
@@ -91,7 +84,6 @@ void GameEngineMain::RemoveEntity(Entity* entity)
 		entity->OnRemoveFromWorld();
 	}
 }
-
 
 void GameEngineMain::Update()
 {
@@ -118,7 +110,6 @@ void GameEngineMain::Update()
 	sm_deltaTimeClock.restart();
 }
 
-
 void GameEngineMain::AddPendingEntities()
 {
 	for (int a = 0; a < m_entitiesToAdd.size(); ++a)
@@ -130,12 +121,11 @@ void GameEngineMain::AddPendingEntities()
 	m_entitiesToAdd.clear();
 }
 
-
 void GameEngineMain::RemovePendingEntities()
 {
 	for (int a = 0; a < m_entitiesToRemove.size(); ++a)
 	{
-		Entity* entity = m_entitiesToRemove[a];
+		Entity *entity = m_entitiesToRemove[a];
 
 		auto found = std::find(m_entities.begin(), m_entities.end(), entity);
 		assert(found != m_entities.end());
@@ -151,7 +141,6 @@ void GameEngineMain::RemovePendingEntities()
 	m_entitiesToRemove.clear();
 }
 
-
 void GameEngineMain::UpdateWindowEvents()
 {
 	if (!m_renderWindow)
@@ -160,15 +149,20 @@ void GameEngineMain::UpdateWindowEvents()
 	sf::Event event;
 	while (m_renderWindow->pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		switch (event.type)
 		{
+		//window closed events
+		case sf::Event::Closed:
 			m_renderWindow->close();
 			m_renderTarget = nullptr;
 			break;
+		// user processes other types of events
+		default:
+			if (m_gameBoard)
+				m_gameBoard->HandleEvent(event);
 		}
 	}
 }
-
 
 void GameEngineMain::UpdateEntities()
 {
@@ -178,7 +172,6 @@ void GameEngineMain::UpdateEntities()
 		entity->Update();
 	}
 }
-
 
 void GameEngineMain::RenderEntities()
 {
@@ -197,11 +190,11 @@ void GameEngineMain::RenderEntities()
 	m_renderTarget->setView(CameraManager::GetInstance()->GetCameraView());
 
 	//Render que
-	std::vector<RenderComponent*> renderers;
+	std::vector<RenderComponent *> renderers;
 	//Every entity that has RenderComponent, or a component that extends RenderComponent - should end up in a render que
 	for (auto entity : m_entities)
 	{
-		std::vector<RenderComponent*> renderComponents = entity->GetAllComponents< RenderComponent >();
+		std::vector<RenderComponent *> renderComponents = entity->GetAllComponents<RenderComponent>();
 		if (!renderComponents.empty())
 		{
 			renderers.insert(renderers.end(), renderComponents.begin(), renderComponents.end());
@@ -210,8 +203,7 @@ void GameEngineMain::RenderEntities()
 
 	// sort using a lambda expression
 	// We sort entities according to their Z level, meaning that the ones with that value lower will be draw FIRST (background), and higher LAST (player)
-	std::sort(renderers.begin(), renderers.end(), [](RenderComponent* a, RenderComponent* b)
-	{
+	std::sort(renderers.begin(), renderers.end(), [](RenderComponent *a, RenderComponent *b) {
 		return a->GetZLevel() < b->GetZLevel();
 	});
 
@@ -225,4 +217,3 @@ void GameEngineMain::RenderEntities()
 		m_renderWindow->display();
 	}
 }
-
