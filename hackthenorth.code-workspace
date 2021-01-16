@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "Project"
+		},
+		{
+			"path": "UbiGame_FlappBird"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.tcc": "cpp"
+		}
+	}
+}

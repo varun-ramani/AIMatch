@@ -12,13 +12,11 @@ namespace GameEngine
 		{
 			None = -1,
 
-			AddYourTexturesEnumerationsHere, // Replace this for your own enumerations
-
 			Count,
 		};
-	}	
+	}
 
-	inline const char* GetPath(eTexture::type texture)
+	inline const char *GetPath(eTexture::type texture)
 	{
 		return "UnknownTexType";
 	}
@@ -26,24 +24,28 @@ namespace GameEngine
 	class TextureManager
 	{
 	public:
-		static TextureManager* GetInstance() { if (!sm_instance) sm_instance = new TextureManager(); return sm_instance; }
+		static TextureManager *GetInstance()
+		{
+			if (!sm_instance)
+				sm_instance = new TextureManager();
+			return sm_instance;
+		}
 		~TextureManager();
 
 		void LoadTextures();
 		void UnLoadTextures();
 
-		sf::Texture* GetTexture(eTexture::type texture) const { return m_textures[(int)texture]; }
+		sf::Texture *GetTexture(eTexture::type texture) const { return m_textures[(int)texture]; }
 
 	private:
 		TextureManager();
-		static TextureManager* sm_instance;
+		static TextureManager *sm_instance;
 
-		sf::Texture* m_textures[eTexture::Count];
+		sf::Texture *m_textures[eTexture::Count];
 	};
-}
+} // namespace GameEngine
 
 namespace TextureHelper
 {
 	sf::Vector2f GetTextureTileSize(GameEngine::eTexture::type texture);
 }
-
