@@ -160,6 +160,7 @@ void GameEngineMain::UpdateWindowEvents()
 		default:
 			if (m_gameBoard)
 				m_gameBoard->HandleEvent(event);
+			break;
 		}
 	}
 }
