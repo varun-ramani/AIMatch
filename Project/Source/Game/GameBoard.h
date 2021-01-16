@@ -17,6 +17,7 @@ namespace Game
 
 		void Update();
 		void SpawnWords(std::vector<std::string> words);
+		void MakeWall(float x, float y, float width, float height);
 		bool IsGameOver() { return false; }
 
 	private:

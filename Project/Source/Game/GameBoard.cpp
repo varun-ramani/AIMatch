@@ -32,13 +32,13 @@ void GameBoard::SpawnWords(std::vector<std::string> words)
     {
         std::string s = words[j];
 
-        m_player = new GameEngine::Entity();
-        GameEngine::GameEngineMain::GetInstance()->AddEntity(m_player);
+        GameEngine::Entity *ent = new GameEngine::Entity();
+        GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
 
-        m_player->SetPos(sf::Vector2f(50.f, 50.f + i * 60));
-        m_player->SetSize(sf::Vector2f(100.f, 50.f));
+        ent->SetPos(sf::Vector2f(20.f, 20.f + i * 30));
+        ent->SetSize(sf::Vector2f(100.f, 20.f));
 
-        GameEngine::TextRenderComponent *render = m_player->AddComponent<GameEngine::TextRenderComponent>();
+        GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
         render->SetString(s);
         render->SetColor(sf::Color::White);
         render->SetFillColor(sf::Color::Black);
@@ -49,6 +49,23 @@ void GameBoard::SpawnWords(std::vector<std::string> words)
 
         i++;
     }
+
+    // MakeWall(75.f, 15.f, 130.f, 5.f);
+    // MakeWall(75.f, 215.f, 130.f, 5.f);
+    // MakeWall(15.f, 100.f, 5.f, 200.f);
+    MakeWall(150.f, 100.f, 5.f, 500.f);
+}
+
+void GameBoard::MakeWall(float x, float y, float width, float height)
+{
+    GameEngine::Entity *ent = new GameEngine::Entity();
+    GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
+
+    ent->SetPos(sf::Vector2f(x, y));
+    ent->SetSize(sf::Vector2f(width, height));
+
+    GameEngine::RenderComponent *render = ent->AddComponent<GameEngine::RenderComponent>();
+    render->SetFillColor(sf::Color::White);
 }
 
 void GameBoard::Update()
