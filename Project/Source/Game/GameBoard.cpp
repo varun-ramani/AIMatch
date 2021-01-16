@@ -78,5 +78,17 @@ void GameBoard::Update()
 
 void GameBoard::HandleEvent(sf::Event event)
 {
-    std::cout << "hi\n";
+    switch (event.type)
+    {
+    case sf::Event::MouseButtonPressed:
+        if (event.mouseButton.button == sf::Mouse::Left)
+        {
+            std::cout << "the left button was pressed" << std::endl;
+            std::cout << "mouse x: " << event.mouseButton.x << std::endl;
+            std::cout << "mouse y: " << event.mouseButton.y << std::endl;
+        }
+        break;
+    case sf::Event::MouseMoved:
+        break;
+    }
 }

@@ -8,7 +8,7 @@ int main()
 	GameEngine::GameEngineMain *mainEngine = GameEngine::GameEngineMain::GetInstance();
 
 	sf::Window *window = mainEngine->GetRenderWindow();
-	window->create(sf::VideoMode(800, 600), "Glovechemy", sf::Style::Default);
+	window->create(sf::VideoMode(800, 600), "Glovechemy", sf::Style::Titlebar | sf::Style::Close);
 
 	while (mainEngine->GetRenderWindow()->isOpen())
 	{
