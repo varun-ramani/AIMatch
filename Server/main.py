@@ -9,6 +9,13 @@ app = Flask(__name__)
 
 vectors.setup('data-file.txt')
 
+def parse_result(result):
+    print(result)
+    if result[1] > 0.5:
+        return result[0]
+    else:
+        return "FAIL"
+
 @app.route('/nearest')
 def nearest():
     word = request.args.get('word', None)
@@ -16,7 +23,7 @@ def nearest():
     if word == None:
         return "Error: no word supplied."
 
-    return str(vectors.n_nearest_word(word, 5))
+    return parse_result(vectors.n_nearest_word(word, 1)[0])
 
 @app.route('/subtract')
 def subtract():
@@ -26,7 +33,7 @@ def subtract():
     if first == None or second == None:
         return "Error: Need to supply two words"
 
-    return str(vectors.subtract(first, second, 5))
+    return parse_result(vectors.subtract(first, second, 1)[0])
 
 
 @app.route('/add')
@@ -37,7 +44,7 @@ def add():
     if first == None or second == None:
         return "Error: Need to supply two words"
 
-    return str(vectors.add(first, second, 5))
+    return parse_result(vectors.add(first, second, 1)[0])
 
 @app.route('/analogy')
 def analogy():
@@ -48,7 +55,7 @@ def analogy():
     if first == None or second == None or third == None:
         return "Error: Need to supply three words"
 
-    return str(vectors.analogy(first, second, third, 5))
+    return parse_result(vectors.analogy(first, second, third, 1)[0])
 
 if __name__ == "__main__":
     app.run()
