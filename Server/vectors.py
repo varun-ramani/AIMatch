@@ -62,7 +62,6 @@ def n_nearest_word(word: str, n_results: int):
         return None
 
     index = vocab[word]
-    print(index)
 
     return n_nearest_vector(W_norm[index, :], n_results, avoid_words=(word,))
 
@@ -86,8 +85,9 @@ def n_nearest_vector(input_vector, n_results: int, avoid_words):
             pass
 
     sorted_dist = np.argsort(-dist)
+    sorted_dist_trimmed = sorted_dist[:n_results]
 
-    a = [ivocab[word_index] for word_index in sorted_dist[:n_results]]
+    a = [(ivocab[word_index], dist[word_index]) for word_index in sorted_dist_trimmed]
     return a
 
 def subtract(first: str, second: str, n_results: int):
@@ -97,7 +97,6 @@ def subtract(first: str, second: str, n_results: int):
     second_vector = W_norm[vocab[second], :]
 
     result_vector = first_vector - second_vector
-    print(result_vector)
 
     return n_nearest_vector(result_vector, n_results, avoid_words=(first, second))
 
@@ -108,7 +107,6 @@ def add(first: str, second: str, n_results: int):
     second_vector = W_norm[vocab[second], :]
 
     result_vector = first_vector + second_vector
-    print(result_vector)
 
     return n_nearest_vector(result_vector, n_results, avoid_words=(first, second))
 
@@ -120,6 +118,5 @@ def analogy(first: str, second: str, third: str, n_results: int):
     third_vector = W_norm[vocab[third], :]
 
     result_vector = second_vector - first_vector + third_vector
-    print(result_vector)
     
     return n_nearest_vector(result_vector, n_results, avoid_words=(first, second, third))
