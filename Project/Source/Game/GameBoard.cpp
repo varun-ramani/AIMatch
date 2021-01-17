@@ -51,7 +51,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, float x, float y)
     GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
     render->SetString(word);
     render->SetColor(sf::Color::White);
-    render->SetFillColor(sf::Color::Black);
+    render->SetFillColor(sf::Color::Transparent);
     render->SetCharacterSizePixels(20);
     render->SetFont("Bookerly-Regular.ttf");
 
@@ -103,8 +103,8 @@ void GameBoard::HandleEvent(sf::Event event)
     case sf::Event::MouseMoved:
         if (m_dragging)
         {
-            int x = event.mouseButton.x;
-            int y = event.mouseButton.y;
+            int x = event.mouseMove.x;
+            int y = event.mouseMove.y;
 
             m_dragging->SetPos(sf::Vector2f(x, y));
         }
