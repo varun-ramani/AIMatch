@@ -132,7 +132,7 @@ void GameBoard::HandleEvent(sf::Event event)
             x = x - 50;
             y = y - 44;
 
-            printf("a %d %d\n", x, y);
+            // printf("a %d %d\n", x, y);
 
             int i = 0;
             for (GameEngine::Entity *word : words)
@@ -160,7 +160,7 @@ void GameBoard::HandleEvent(sf::Event event)
             m_dragging->SetPos(sf::Vector2f((x - 142.65194) / 3.2127 + 35, (y - 75.56521) / 2.44906 + 25));
             // m_dragging->SetPos(sf::Vector2f(x, y));
 
-            printf("b %f %f\n", m_dragging->GetPos().x, m_dragging->GetPos().y);
+            // printf("b %f %f\n", m_dragging->GetPos().x, m_dragging->GetPos().y);
         }
         break;
     case sf::Event::MouseButtonReleased:
@@ -226,4 +226,8 @@ bool GameBoard::CheckDragging()
         i++;
     }
     return false;
+}
+
+void GameBoard::LoseLife()
+{
 }

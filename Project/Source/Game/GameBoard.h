@@ -29,6 +29,7 @@ namespace Game
 		GameEngine::Entity *MakeWall(float x, float y, float width, float height, sf::Color color = sf::Color::White);
 		bool IsGameOver() { return false; }
 		bool CheckDragging();
+		void LoseLife();
 
 	private:
 		std::vector<GameEngine::Entity *> words;
@@ -38,5 +39,6 @@ namespace Game
 		GameEngine::Entity *m_dragging;
 		int m_words;
 		WordVectors::ServerComm server = WordVectors::ServerComm("http://localhost:5000");
+		int livesn = 5;
 	};
 } // namespace Game

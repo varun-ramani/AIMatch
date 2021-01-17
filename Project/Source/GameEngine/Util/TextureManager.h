@@ -27,7 +27,7 @@ namespace GameEngine
 		case eTexture::Arrow:
 			return "images.png";
 		case eTexture::Life:
-			return "download.png";
+			return "heart.png";
 		default:
 			return "UnknownTexType";
 		}
