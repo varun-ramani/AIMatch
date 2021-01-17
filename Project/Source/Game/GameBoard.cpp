@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
@@ -51,7 +52,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, float x, float y)
     GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
     render->SetString(word);
     render->SetColor(sf::Color::White);
-    render->SetFillColor(sf::Color::Black);
+    render->SetFillColor(sf::Color::Transparent);
     render->SetCharacterSizePixels(20);
     render->SetFont("Bookerly-Regular.ttf");
 
@@ -84,6 +85,8 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
+            // printf("a %d %d\n", x, y);
+
             int i = 1;
             for (GameEngine::Entity *word : words)
             {
@@ -93,9 +96,6 @@ void GameBoard::HandleEvent(sf::Event event)
                 if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
                 {
                     std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
-                    std::cout << s;
-                    std::cout << "\n";
-
                     m_dragging = MakeWord(s, pos.x, pos.y);
                 }
 
@@ -106,11 +106,18 @@ void GameBoard::HandleEvent(sf::Event event)
     case sf::Event::MouseMoved:
         if (m_dragging)
         {
-            int x = event.mouseButton.x;
-            int y = event.mouseButton.y;
+            int x = event.mouseMove.x;
+            int y = event.mouseMove.y;
 
-            m_dragging->SetPos(sf::Vector2f(x, y));
+            m_dragging->SetPos(sf::Vector2f((x + 38.43569) / 1.61404 - 50, (y - 5.90485) / 1.19912 - 10));
+
+            // printf("b %d %d\n", x, m_dragging->GetPos().x);
         }
+        break;
+    case sf::Event::MouseButtonReleased:
+        m_dragging = nullptr;
+        break;
+    default:
         break;
     }
 }
