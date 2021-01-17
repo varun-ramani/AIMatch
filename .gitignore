@@ -11,3 +11,4 @@ UbiGame_Blank/.vs
 UbiGame_FlappBird/.vs
 Server/data-file.txt
 *.DS_Store*
+*.pyc

@@ -174,6 +174,9 @@ bool GameBoard::CheckDragging()
     int i = 0;
     for (GameEngine::Entity *word : boxes)
     {
+        if (i == 3)
+            return false;
+
         sf::Vector2f wpos = word->GetPos();
         sf::Vector2f wsize = word->GetSize();
 
@@ -192,6 +195,15 @@ bool GameBoard::CheckDragging()
                 GameEngine::GameEngineMain::GetInstance()->RemoveEntity(dragged[i]);
             }
             dragged[i] = m_dragging;
+            if (dragged[0] != nullptr && dragged[1] != nullptr && dragged[2] != nullptr)
+            {
+                std::string a = dragged[0]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                std::string b = dragged[1]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                std::string c = dragged[2]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+
+                std::string result = server.getWordAnalogy(a, b, c);
+                printf("Got back %s\n", result.c_str());
+            }
             m_dragging->SetPos(wpos);
 
             return true;
