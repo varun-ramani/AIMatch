@@ -26,11 +26,11 @@ GameBoard::GameBoard()
     MakeWall(100.f, 100.f, 5.f, 500.f);
 
     MakeBox(150, 200);
-    MakeWord("K", 194, 185)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
+    MakeWord("K", 194, 185, 20)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
     MakeBox(250, 200);
-    MakeWord("=", 294, 185);
+    MakeWord("=", 294, 185, 20);
     MakeBox(350, 200);
-    MakeWord("K", 394, 185)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
+    MakeWord("K", 394, 185, 20)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
     MakeBox(450, 200);
 
     for (int i = 0; i < 3; i++)
@@ -69,10 +69,10 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
 void GameBoard::MakeBox(float x, float y)
 {
     boxes.push_back(MakeWall(x, y, 75, 50));
-    MakeWall(x, y, 71, 46, sf::Color::Black);
+    bboxes.push_back(MakeWall(x, y, 71, 46, sf::Color::Black));
 }
 
-GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
+GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y, int fontsize)
 {
     GameEngine::Entity *ent = new GameEngine::Entity();
     GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
@@ -93,7 +93,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
     render->SetString(word);
     render->SetColor(sf::Color::White);
     render->SetFillColor(sf::Color::Transparent);
-    render->SetCharacterSizePixels(10);
+    render->SetCharacterSizePixels(fontsize);
     render->SetFont("Bookerly-Regular.ttf");
 
     return ent;
@@ -115,6 +115,18 @@ GameEngine::Entity *GameBoard::MakeWall(float x, float y, float width, float hei
 
 void GameBoard::Update()
 {
+    if (animframe != -1)
+    {
+        animframe++;
+        if (animframe % 10 == 0)
+        {
+            Shake(anim[(animframe / 10) % 20]);
+            if (animframe > animmax)
+            {
+                animframe = -1;
+            }
+        }
+    }
 }
 
 void GameBoard::HandleEvent(sf::Event event)
@@ -175,6 +187,7 @@ void GameBoard::HandleEvent(sf::Event event)
         }
 
         m_dragging = nullptr;
+        LoseLife();
         break;
     default:
         break;
@@ -235,5 +248,26 @@ void GameBoard::LoseLife()
     if (livesn == 0)
     {
         printf("Game over!\n");
+    }
+
+    animframe = 0;
+}
+
+void GameBoard::Shake(int i)
+{
+    for (auto box : boxes)
+    {
+        float x = box->GetPos().x;
+        float y = box->GetPos().y;
+
+        box->SetPos(sf::Vector2f(x + i, y));
+    }
+
+    for (auto box : bboxes)
+    {
+        float x = box->GetPos().x;
+        float y = box->GetPos().y;
+
+        box->SetPos(sf::Vector2f(x + i, y));
     }
 }
