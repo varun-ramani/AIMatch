@@ -12,7 +12,7 @@ namespace GameEngine
 	struct SParticleDefinition
 	{
 		SParticleDefinition()
-			: m_texture(eTexture::Life), m_zLevel(2), m_size(sf::Vector2f(10.f, 10.f)), m_animId(EAnimationId::None), m_lifeTime(10.f)
+			: m_texture(eTexture::Particle), m_zLevel(2), m_size(sf::Vector2f(10.f, 10.f)), m_animId(EAnimationId::None), m_lifeTime(1.f)
 		{
 		}
 

@@ -15,6 +15,7 @@ namespace GameEngine
 			None = -1,
 			Arrow = 0,
 			Life = 1,
+			Particle = 2,
 
 			Count,
 		};
@@ -28,6 +29,8 @@ namespace GameEngine
 			return "images.png";
 		case eTexture::Life:
 			return "heart.png";
+		case eTexture::Particle:
+			return "circle_01.png";
 		default:
 			return "UnknownTexType";
 		}

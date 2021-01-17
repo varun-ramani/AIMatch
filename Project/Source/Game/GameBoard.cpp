@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <math.h>
+#include <random>
 
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
@@ -258,10 +259,13 @@ bool GameBoard::CheckDragging()
 
                 std::string result = server.getWordAnalogy(a, b, c);
 
-                if (result == "FAIL") {
+                if (result == "FAIL")
+                {
                     std::cout << "Failed to perform analogy." << std::endl;
                     LoseLife();
-                } else {
+                }
+                else
+                {
                     std::cout << a << " is to " << b << " as " << c << " is to " << result << std::endl;
                     MakeResult(result);
                 }
@@ -325,4 +329,22 @@ void GameBoard::MakeResult(std::string res)
     from = result->GetPos();
     to = sf::Vector2f(20.f, 20.f + (m_words)*15);
     moveframe = 0;
+
+    std::random_device rand_dev;
+    std::mt19937 generator(rand_dev());
+    std::uniform_real_distribution<float> distribution(0.0, 1.0);
+
+    for (int i = 0; i < 50; i++)
+    {
+        GameEngine::Entity *ent = new GameEngine::Entity();
+        GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
+        GameEngine::SpriteRenderComponent *r = ent->AddComponent<GameEngine::SpriteRenderComponent>();
+        r->SetTexture(GameEngine::eTexture::Particle);
+        r->SetZLevel(2);
+        ent->SetPos(result->GetPos());
+        ent->SetSize(sf::Vector2f(10.f, 10.f));
+
+        GameEngine::ParticleComponent *pc = ent->AddComponent<GameEngine::ParticleComponent>();
+        pc->SetDirection(sf::Vector2f(distribution(generator), distribution(generator)));
+    }
 }

@@ -6,6 +6,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Event.hpp>
 #include <vector>
+#include <random>
 
 #include "WordVectors/ServerComm.h"
 
