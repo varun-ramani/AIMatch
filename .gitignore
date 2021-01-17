@@ -1,6 +1,3 @@
-#Mac OS files
-*/.DS_Store
-
 #Temporary files
 *.o
 */output
@@ -12,3 +9,5 @@ UbiGame_FlappBird/tmp
 #Visual Studio Meta data
 UbiGame_Blank/.vs
 UbiGame_FlappBird/.vs
+Server/data-file.txt
+*.DS_Store*
