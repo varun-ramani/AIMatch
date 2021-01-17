@@ -63,7 +63,7 @@ GameBoard::GameBoard()
         lives[i]->SetSize(sf::Vector2f(50, 50));
     }
 
-    MakeResult("result");
+    // MakeResult("result");
 }
 
 GameBoard::~GameBoard()

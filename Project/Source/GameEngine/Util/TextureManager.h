@@ -30,7 +30,7 @@ namespace GameEngine
 		case eTexture::Life:
 			return "heart.png";
 		case eTexture::Particle:
-			return "circle_01.png";
+			return "circle_02.png";
 		default:
 			return "UnknownTexType";
 		}
