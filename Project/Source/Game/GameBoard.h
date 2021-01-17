@@ -7,6 +7,8 @@
 #include <SFML/Window/Event.hpp>
 #include <vector>
 
+#include "WordVectors/ServerComm.h"
+
 namespace Game
 {
 	//Used for storing and controlling all game related entities, as well as providing an entry point for the "game" side of application
@@ -32,7 +34,9 @@ namespace Game
 		std::vector<GameEngine::Entity *> words;
 		std::vector<GameEngine::Entity *> boxes;
 		GameEngine::Entity *dragged[3];
+		GameEngine::Entity *lives[5];
 		GameEngine::Entity *m_dragging;
 		int m_words;
+		WordVectors::ServerComm server = WordVectors::ServerComm("http://localhost:5000");
 	};
 } // namespace Game

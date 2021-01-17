@@ -1,8 +1,6 @@
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
 
-#include "WordVectors/ServerComm.h"
-
 #include <vector>
 
 int main()
@@ -10,7 +8,7 @@ int main()
 	GameEngine::GameEngineMain *mainEngine = GameEngine::GameEngineMain::GetInstance();
 
 	// TODO: Check if server connection available on startup instead of crashing later.
-	WordVectors::ServerComm serverComm("https://localhost:5000");
+	// WordVectors::ServerComm serverComm("https://localhost:5000");
 
 	sf::Window *window = mainEngine->GetRenderWindow();
 	window->create(sf::VideoMode(800, 600), "Glovechemy", sf::Style::Titlebar | sf::Style::Close);

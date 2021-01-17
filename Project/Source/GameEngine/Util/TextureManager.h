@@ -14,6 +14,7 @@ namespace GameEngine
 		{
 			None = -1,
 			Arrow = 0,
+			Life = 1,
 
 			Count,
 		};
@@ -25,6 +26,8 @@ namespace GameEngine
 		{
 		case eTexture::Arrow:
 			return "images.png";
+		case eTexture::Life:
+			return "download.png";
 		default:
 			return "UnknownTexType";
 		}
@@ -46,7 +49,6 @@ namespace GameEngine
 
 		sf::Texture *GetTexture(eTexture::type texture) const
 		{
-			printf("loading %d\n", texture);
 			return m_textures[(int)texture];
 		}
 

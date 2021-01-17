@@ -17,27 +17,11 @@ using namespace Game;
 GameBoard::GameBoard()
 {
     std::vector<std::string> words;
-    words.push_back("air");
-    words.push_back("water");
-    words.push_back("earth");
+    words.push_back("man");
+    words.push_back("woman");
+    words.push_back("king");
 
     SpawnWords(words);
-
-    m_dragging = nullptr;
-}
-
-GameBoard::~GameBoard()
-{
-}
-
-void GameBoard::SpawnWords(std::vector<std::string> strs)
-{
-    m_words = 0;
-    for (int j = 0; j < strs.size(); j++)
-    {
-        std::string s = strs[j];
-        MakeWord(s);
-    }
 
     MakeWall(100.f, 100.f, 5.f, 500.f);
 
@@ -52,6 +36,33 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
     for (int i = 0; i < 3; i++)
     {
         dragged[i] = nullptr;
+    }
+
+    m_dragging = nullptr;
+
+    for (int i = 0; i < 5; i++)
+    {
+        lives[i] = new GameEngine::Entity();
+        GameEngine::GameEngineMain::GetInstance()->AddEntity(lives[i]);
+        GameEngine::SpriteRenderComponent *r = lives[i]->AddComponent<GameEngine::SpriteRenderComponent>();
+        r->SetTexture(GameEngine::eTexture::Life);
+        r->SetZLevel(2);
+        lives[i]->SetPos(sf::Vector2f(150 + i * 50, 50));
+        lives[i]->SetSize(sf::Vector2f(50, 50));
+    }
+}
+
+GameBoard::~GameBoard()
+{
+}
+
+void GameBoard::SpawnWords(std::vector<std::string> strs)
+{
+    m_words = 0;
+    for (int j = 0; j < strs.size(); j++)
+    {
+        std::string s = strs[j];
+        MakeWord(s);
     }
 }
 
@@ -174,6 +185,9 @@ bool GameBoard::CheckDragging()
     int i = 0;
     for (GameEngine::Entity *word : boxes)
     {
+        if (i == 3)
+            return false;
+
         sf::Vector2f wpos = word->GetPos();
         sf::Vector2f wsize = word->GetSize();
 
@@ -192,6 +206,15 @@ bool GameBoard::CheckDragging()
                 GameEngine::GameEngineMain::GetInstance()->RemoveEntity(dragged[i]);
             }
             dragged[i] = m_dragging;
+            if (dragged[0] != nullptr && dragged[1] != nullptr && dragged[2] != nullptr)
+            {
+                std::string a = dragged[0]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                std::string b = dragged[1]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                std::string c = dragged[2]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+
+                std::string result = server.getWordAnalogy(a, b, c);
+                printf("Got back %s\n", result.c_str());
+            }
             m_dragging->SetPos(wpos);
 
             return true;
