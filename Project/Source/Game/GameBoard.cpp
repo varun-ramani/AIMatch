@@ -87,9 +87,22 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
+            int i = 1;
             for (GameEngine::Entity *word : words)
             {
-                // if ()
+                sf::Vector2f pos = word->GetPos();
+                sf::Vector2f size = word->GetSize();
+
+                // printf("pos %f %f size %f %f mouse %d %d\n", pos.x, pos.y, size.x, size.y, x, y);
+
+                if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
+                {
+                    std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                    std::cout << s;
+                    std::cout << "\n";
+                }
+
+                i++;
             }
         }
         break;

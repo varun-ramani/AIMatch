@@ -9,7 +9,7 @@ namespace GameEngine
         TextRenderComponent();
         ~TextRenderComponent();
 
-        virtual void Render(sf::RenderTarget* target) override;
+        virtual void Render(sf::RenderTarget *target) override;
 
         void SetString(std::string displayString);
         void SetFont(std::string fontFile);
@@ -19,8 +19,10 @@ namespace GameEngine
         void SetStyle(int styleBitField);
         void SetStyle(sf::Text::Style style, bool value);
 
+        sf::Text GetString();
+
     private:
         sf::Text m_text;
         sf::Font m_font;
     };
-}  // namespace GameEngine
+} // namespace GameEngine
