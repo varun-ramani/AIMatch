@@ -11,14 +11,18 @@ namespace GameEngine
 		enum type
 		{
 			None = -1,
-
+			Health,
 			Count,
 		};
 	}
 
 	inline const char *GetPath(eTexture::type texture)
 	{
-		return "UnknownTexType";
+		switch (texture)
+		{
+		case eTexture::Health:    return "player.png";
+		default:       return "UnknownTexType";
+		}
 	}
 
 	class TextureManager

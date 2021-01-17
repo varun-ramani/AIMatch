@@ -21,10 +21,17 @@ namespace Game
 
 		void SpawnWords(std::vector<std::string> words);
 		void MakeWall(float x, float y, float width, float height);
-		bool IsGameOver() { return false; }
+		bool IsGameOver() const { return m_isGameOver; }
 
 	private:
 		std::vector<GameEngine::Entity *> words;
 		GameEngine::Entity *m_dragging;
+
+		void CreateHealth();
+		void UpdateHealth();
+		
+		GameEngine::Entity *m_player;
+		GameEngine::Entity* m_health;
+		bool  m_isGameOver;
 	};
 } // namespace Game

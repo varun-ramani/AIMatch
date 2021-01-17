@@ -8,11 +8,15 @@
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
 #include "GameEngine/EntitySystem/Components/TextRenderComponent.h"
+#include "Game/Health/HealthEntity.h"
 
 using namespace Game;
 
 GameBoard::GameBoard()
+    : m_health(nullptr)
+    , m_isGameOver(false)
 {
+    CreateHealth();
     std::vector<std::string> words;
     words.push_back("air");
     words.push_back("water");
@@ -27,6 +31,7 @@ GameBoard::~GameBoard()
 
 void GameBoard::SpawnWords(std::vector<std::string> strs)
 {
+    
     int i = 0;
     for (int j = 0; j < strs.size(); j++)
     {
@@ -96,4 +101,18 @@ void GameBoard::HandleEvent(sf::Event event)
     case sf::Event::MouseMoved:
         break;
     }
+}
+
+void GameBoard::CreateHealth()
+{
+    HealthEntity* m_health = new HealthEntity();
+    GameEngine::GameEngineMain::GetInstance()->AddEntity(m_health);
+    m_health->SetPos(sf::Vector2f(50.f, 50.f));	
+	m_health->SetSize(sf::Vector2f(40.f, 40.f));
+    static_cast<GameEngine::RenderComponent*>(m_health->AddComponent<GameEngine::RenderComponent>());
+}
+
+void GameBoard::UpdateHealth()
+{
+
 }
