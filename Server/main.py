@@ -49,9 +49,11 @@ def analogy():
         return "Error: Need to supply three words"
 
     result = vectors.analogy(first, second, third, 1)[0]
+    print(result)
 
     if result[1] < 0.48:
         result = vectors.analogy(second, first, third, 1)[0]
+        print(result)
 
         if result[1] < 0.52:
             return "FAIL"
