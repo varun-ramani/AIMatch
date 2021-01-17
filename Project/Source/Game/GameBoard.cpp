@@ -115,6 +115,11 @@ void GameBoard::HandleEvent(sf::Event event)
         }
         break;
     case sf::Event::MouseButtonReleased:
+        if (m_dragging->GetPos().x > 150)
+            dragged.push_back(m_dragging);
+        else
+            GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
+
         m_dragging = nullptr;
         break;
     default:

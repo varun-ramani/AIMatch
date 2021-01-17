@@ -26,6 +26,7 @@ namespace Game
 
 	private:
 		std::vector<GameEngine::Entity *> words;
+		std::vector<GameEngine::Entity *> dragged;
 		GameEngine::Entity *m_dragging;
 	};
 } // namespace Game
