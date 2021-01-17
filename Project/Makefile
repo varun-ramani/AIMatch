@@ -13,7 +13,7 @@ CXXFLAGS = -std=c++17 -O2 -Wall
 INCLUDES =  -I$(ROOT)Source -I$(ROOT)../SFML-2.5.0/include
 LDFLAGS = -L$(ROOT)../SFML-2.5.0/lib -rpath $(ROOT)../SFML-2.5.0/lib
 
-LIBS = -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window
+LIBS = -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window -lcurl -lcurlpp
 
 TARGET = $(TARGET_DIR)output
 
