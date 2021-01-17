@@ -20,6 +20,7 @@ namespace Game
 		void HandleEvent(sf::Event event);
 
 		void SpawnWords(std::vector<std::string> words);
+		GameEngine::Entity *MakeWord(std::string word, float x, float y);
 		void MakeWall(float x, float y, float width, float height);
 		bool IsGameOver() { return false; }
 
