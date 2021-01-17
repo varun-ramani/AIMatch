@@ -140,6 +140,21 @@ void GameBoard::Update()
             }
         }
     }
+
+    if (moveframe != -1)
+    {
+        moveframe++;
+        int x1 = from.x - (from.x - to.x) / mframes * moveframe;
+        int y1 = from.y - (from.y - to.y) / mframes * moveframe;
+        result->SetPos(sf::Vector2f(x1, y1));
+
+        if (moveframe > mframes)
+        {
+            moveframe = -1;
+            MakeWord(result->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString());
+            GameEngine::GameEngineMain::GetInstance()->RemoveEntity(result);
+        }
+    }
 }
 
 void GameBoard::HandleEvent(sf::Event event)
@@ -294,11 +309,13 @@ void GameBoard::Shake(int i)
     }
 }
 
-void GameBoard::MakeResult(std::string result)
+void GameBoard::MakeResult(std::string res)
 {
     sf::Vector2f p = boxes[3]->GetPos();
-    GameEngine::Entity *ent = MakeWord("result", p.x - 22, p.y - 15);
+    result = MakeWord(res, p.x - 22, p.y - 15);
+    result->GetComponent<GameEngine::TextRenderComponent>()->SetZLevel(3);
 
-    GameEngine::ParticleEmitterComponent *e = ent->AddComponent<GameEngine::ParticleEmitterComponent>();
-    // GameEngine::ParticleComponent
+    from = result->GetPos();
+    to = sf::Vector2f(20.f, 20.f + (m_words)*15);
+    moveframe = 0;
 }

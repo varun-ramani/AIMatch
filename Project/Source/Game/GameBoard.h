@@ -88,5 +88,11 @@ namespace Game
 			1,
 			1,
 		};
+
+		GameEngine::Entity *result;
+		int moveframe = -1;
+		sf::Vector2f to;
+		sf::Vector2f from;
+		int mframes = 6000;
 	};
 } // namespace Game
