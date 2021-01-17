@@ -7,9 +7,7 @@ import time
 
 app = Flask(__name__)
 
-@app.route('/init')
-def init():
-    return Response(vectors.setup('data-file.txt'))
+vectors.setup('data-file.txt')
 
 @app.route('/nearest')
 def nearest():
@@ -40,6 +38,17 @@ def add():
         return "Error: Need to supply two words"
 
     return str(vectors.add(first, second, 5))
+
+@app.route('/analogy')
+def analogy():
+    first = request.args.get('first', None)
+    second = request.args.get('second', None)
+    third = request.args.get('third', None)
+
+    if first == None or second == None or third == None:
+        return "Error: Need to supply three words"
+
+    return str(vectors.analogy(first, second, third, 5))
 
 if __name__ == "__main__":
     app.run()

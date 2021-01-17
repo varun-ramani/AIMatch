@@ -62,10 +62,11 @@ def n_nearest_word(word: str, n_results: int):
         return None
 
     index = vocab[word]
+    print(index)
 
-    return n_nearest_vector(W_norm[index, :], n_results)
+    return n_nearest_vector(W_norm[index, :], n_results, avoid_words=(word,))
 
-def n_nearest_vector(input_vector, n_results: int):
+def n_nearest_vector(input_vector, n_results: int, avoid_words):
     global W_norm, vocab, ivocab
 
     vec_norm = np.zeros(input_vector.shape)
@@ -74,9 +75,20 @@ def n_nearest_vector(input_vector, n_results: int):
 
     dist = np.dot(W_norm, vec_norm.T)
 
-    a = np.argsort(-dist)[1:n_results + 1]
+    for word in avoid_words:
+        try:
+            print(f"Setting {word} to negative infinity")
+            dist[vocab[word]] = -np.Inf
+            print(f"Setting {word + 's'} to negative infinity")
+            dist[vocab[word + 's']] = -np.Inf
+        except:
+            print("Failed")
+            pass
 
-    return [ivocab[word_index] for word_index in a]
+    sorted_dist = np.argsort(-dist)
+
+    a = [ivocab[word_index] for word_index in sorted_dist[:n_results]]
+    return a
 
 def subtract(first: str, second: str, n_results: int):
     global W_norm, vocab, ivocab
@@ -85,8 +97,9 @@ def subtract(first: str, second: str, n_results: int):
     second_vector = W_norm[vocab[second], :]
 
     result_vector = first_vector - second_vector
+    print(result_vector)
 
-    return n_nearest_vector(result_vector, n_results)
+    return n_nearest_vector(result_vector, n_results, avoid_words=(first, second))
 
 def add(first: str, second: str, n_results: int):
     global W_norm, vocab, ivocab
@@ -95,5 +108,18 @@ def add(first: str, second: str, n_results: int):
     second_vector = W_norm[vocab[second], :]
 
     result_vector = first_vector + second_vector
+    print(result_vector)
 
-    return n_nearest_vector(result_vector, n_results)
+    return n_nearest_vector(result_vector, n_results, avoid_words=(first, second))
+
+def analogy(first: str, second: str, third: str, n_results: int):
+    global W_norm, vocab, ivocab
+
+    first_vector = W_norm[vocab[first], :]
+    second_vector = W_norm[vocab[second], :]
+    third_vector = W_norm[vocab[third], :]
+
+    result_vector = second_vector - first_vector + third_vector
+    print(result_vector)
+    
+    return n_nearest_vector(result_vector, n_results, avoid_words=(first, second, third))
