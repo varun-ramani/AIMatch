@@ -10,6 +10,8 @@
 #include "Game/Player/PlayerMovementComponent.h"
 #include "GameEngine/EntitySystem/Components/TextRenderComponent.h"
 #include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
+#include "GameEngine/EntitySystem/Components/ParticleEmitterComponent.h"
+#include "GameEngine/EntitySystem/Components/ParticleComponent.h"
 #include "GameEngine/Util/TextureManager.h"
 
 using namespace Game;
@@ -17,9 +19,18 @@ using namespace Game;
 GameBoard::GameBoard()
 {
     std::vector<std::string> words;
-    words.push_back("man");
-    words.push_back("woman");
     words.push_back("king");
+    words.push_back("woman");
+    words.push_back("man");
+    words.push_back("hockey");
+    words.push_back("affluence");
+    words.push_back("poverty");
+    words.push_back("rooster");
+    words.push_back("male");
+    words.push_back("female");
+    words.push_back("young");
+    words.push_back("fast");
+    words.push_back("old");
 
     SpawnWords(words);
 
@@ -50,6 +61,8 @@ GameBoard::GameBoard()
         lives[i]->SetPos(sf::Vector2f(150 + i * 50, 50));
         lives[i]->SetSize(sf::Vector2f(50, 50));
     }
+
+    MakeResult("result");
 }
 
 GameBoard::~GameBoard()
@@ -228,14 +241,17 @@ bool GameBoard::CheckDragging()
                 std::string b = dragged[1]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
                 std::string c = dragged[2]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
 
-                std::string result = server.getWordAnalogy(a, b, c);
-                printf("Got back %s\n", result.c_str());
+                // std::string result = server.getWordAnalogy(a, b, c);
+                // printf("Got back %s\n", result.c_str());
 
                 for (int q = 0; q < 3; q++)
                 {
                     GameEngine::GameEngineMain::GetInstance()->RemoveEntity(dragged[q]);
                     dragged[q] = nullptr;
                 }
+
+                MakeResult("result");
+
                 return true;
             }
             m_dragging->SetPos(wpos);
@@ -276,4 +292,13 @@ void GameBoard::Shake(int i)
 
         box->SetPos(sf::Vector2f(x + i, y));
     }
+}
+
+void GameBoard::MakeResult(std::string result)
+{
+    sf::Vector2f p = boxes[3]->GetPos();
+    GameEngine::Entity *ent = MakeWord("result", p.x - 22, p.y - 15);
+
+    GameEngine::ParticleEmitterComponent *e = ent->AddComponent<GameEngine::ParticleEmitterComponent>();
+    // GameEngine::ParticleComponent
 }
