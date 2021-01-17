@@ -20,6 +20,8 @@ GameBoard::GameBoard()
     words.push_back("earth");
 
     SpawnWords(words);
+
+    m_dragging = nullptr;
 }
 
 GameBoard::~GameBoard()
@@ -36,6 +38,17 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
     }
 
     MakeWall(150.f, 100.f, 5.f, 500.f);
+
+    for (int i = 0; i < 3; i++)
+    {
+        MakeBox(300 + 100 * i, 200);
+    }
+}
+
+void GameBoard::MakeBox(float x, float y)
+{
+    MakeWall(x, y, 100, 50);
+    MakeWall(x + 2, y + 2, 96, 46, sf::Color::Black);
 }
 
 GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
@@ -65,7 +78,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
     return ent;
 }
 
-void GameBoard::MakeWall(float x, float y, float width, float height)
+GameEngine::Entity *GameBoard::MakeWall(float x, float y, float width, float height, sf::Color color)
 {
     GameEngine::Entity *ent = new GameEngine::Entity();
     GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
@@ -74,7 +87,9 @@ void GameBoard::MakeWall(float x, float y, float width, float height)
     ent->SetSize(sf::Vector2f(width, height));
 
     GameEngine::RenderComponent *render = ent->AddComponent<GameEngine::RenderComponent>();
-    render->SetFillColor(sf::Color::White);
+    render->SetFillColor(color);
+
+    return ent;
 }
 
 void GameBoard::Update()
@@ -83,9 +98,11 @@ void GameBoard::Update()
 
 void GameBoard::HandleEvent(sf::Event event)
 {
+    // printf("Handling event %d\n", event.type);
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
+        // printf("pressed\n");
         if (event.mouseButton.button == sf::Mouse::Left)
         {
             int x = event.mouseButton.x;
@@ -110,6 +127,7 @@ void GameBoard::HandleEvent(sf::Event event)
         }
         break;
     case sf::Event::MouseMoved:
+        // printf("moved \n");
         if (m_dragging)
         {
             int x = event.mouseMove.x;
@@ -121,13 +139,17 @@ void GameBoard::HandleEvent(sf::Event event)
         }
         break;
     case sf::Event::MouseButtonReleased:
-        if (m_dragging->GetPos().x > 150)
+        // printf("released \n");
+        if (m_dragging)
         {
-            CheckDragging();
-            dragged.push_back(m_dragging);
+            if (m_dragging->GetPos().x > 150)
+            {
+                CheckDragging();
+                dragged.push_back(m_dragging);
+            }
+            else
+                GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
         }
-        else
-            GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
 
         m_dragging = nullptr;
         break;
