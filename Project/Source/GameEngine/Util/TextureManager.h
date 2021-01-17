@@ -28,7 +28,7 @@ namespace GameEngine
 		case eTexture::Arrow:
 			return "images.png";
 		case eTexture::Life:
-			return "heart.png";
+			return "bird.png";
 		case eTexture::Particle:
 			return "circle_02.png";
 		default:
