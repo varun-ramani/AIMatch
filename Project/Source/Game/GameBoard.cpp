@@ -256,8 +256,15 @@ bool GameBoard::CheckDragging()
                 std::string b = dragged[1]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
                 std::string c = dragged[2]->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
 
-                // std::string result = server.getWordAnalogy(a, b, c);
-                // printf("Got back %s\n", result.c_str());
+                std::string result = server.getWordAnalogy(a, b, c);
+
+                if (result == "FAIL") {
+                    std::cout << "Failed to perform analogy." << std::endl;
+                    LoseLife();
+                } else {
+                    std::cout << a << " is to " << b << " as " << c << " is to " << result << std::endl;
+                    MakeResult(result);
+                }
 
                 for (int q = 0; q < 3; q++)
                 {
