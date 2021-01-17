@@ -139,12 +139,10 @@ void GameBoard::HandleEvent(sf::Event event)
             {
                 sf::Vector2f pos = word->GetPos();
                 sf::Vector2f size = word->GetSize();
-                printf("%f %f %f %f\n", pos.x, pos.y, size.x, size.y);
 
                 if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 20) <= y && y <= (pos.y + size.y + i * 20))
                 {
                     std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
-                    printf("found %s\n", s.c_str());
                     m_dragging = MakeWord(s, pos.x, pos.y);
                 }
 
@@ -159,8 +157,8 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseMove.x;
             int y = event.mouseMove.y;
 
-            // m_dragging->SetPos(sf::Vector2f((x + 76.87138) / 3.22808 - 50, (y - 11.8097) / 2.39824 - 10));
-            m_dragging->SetPos(sf::Vector2f(x, y));
+            m_dragging->SetPos(sf::Vector2f((x - 142.65194) / 3.2127 + 35, (y - 75.56521) / 2.44906 + 25));
+            // m_dragging->SetPos(sf::Vector2f(x, y));
 
             printf("b %f %f\n", m_dragging->GetPos().x, m_dragging->GetPos().y);
         }

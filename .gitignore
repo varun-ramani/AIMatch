@@ -12,3 +12,4 @@ UbiGame_FlappBird/.vs
 Server/data-file.txt
 *.DS_Store*
 *.pyc
+Server/data-file-small.txt
