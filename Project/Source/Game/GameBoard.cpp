@@ -48,6 +48,11 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
     MakeBox(350, 200);
     MakeWord("K", 394, 185)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
     MakeBox(450, 200);
+
+    for (int i = 0; i < 3; i++)
+    {
+        dragged[i] = nullptr;
+    }
 }
 
 void GameBoard::MakeBox(float x, float y)
@@ -166,6 +171,7 @@ bool GameBoard::CheckDragging()
     sf::Vector2f dpos = m_dragging->GetPos();
     sf::Vector2f dsize = m_dragging->GetSize();
 
+    int i = 0;
     for (GameEngine::Entity *word : boxes)
     {
         sf::Vector2f wpos = word->GetPos();
@@ -181,14 +187,16 @@ bool GameBoard::CheckDragging()
 
         if ((lx && ty) || (lx && by) || (rx && ty) || (rx && by))
         {
+            if (dragged[i] != nullptr)
+            {
+                GameEngine::GameEngineMain::GetInstance()->RemoveEntity(dragged[i]);
+            }
+            dragged[i] = m_dragging;
             m_dragging->SetPos(wpos);
+
             return true;
         }
+        i++;
     }
     return false;
-}
-
-void GameBoard::Merge(std::string a, std::string b)
-{
-    printf("merging %s %s\n", a.c_str(), b.c_str());
 }

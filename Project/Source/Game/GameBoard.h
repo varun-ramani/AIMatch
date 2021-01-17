@@ -27,12 +27,11 @@ namespace Game
 		GameEngine::Entity *MakeWall(float x, float y, float width, float height, sf::Color color = sf::Color::White);
 		bool IsGameOver() { return false; }
 		bool CheckDragging();
-		void Merge(std::string a, std::string b);
 
 	private:
 		std::vector<GameEngine::Entity *> words;
 		std::vector<GameEngine::Entity *> boxes;
-		std::vector<GameEngine::Entity *> dragged;
+		GameEngine::Entity *dragged[3];
 		GameEngine::Entity *m_dragging;
 		int m_words;
 	};
