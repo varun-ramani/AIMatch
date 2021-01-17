@@ -276,8 +276,6 @@ bool GameBoard::CheckDragging()
                     dragged[q] = nullptr;
                 }
 
-                MakeResult("result");
-
                 return true;
             }
             m_dragging->SetPos(wpos);
