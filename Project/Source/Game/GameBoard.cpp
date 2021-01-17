@@ -52,7 +52,7 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
 
 void GameBoard::MakeBox(float x, float y)
 {
-    MakeWall(x, y, 75, 50);
+    boxes.push_back(MakeWall(x, y, 75, 50));
     MakeWall(x, y, 71, 46, sf::Color::Black);
 }
 
@@ -77,7 +77,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
     render->SetString(word);
     render->SetColor(sf::Color::White);
     render->SetFillColor(sf::Color::Transparent);
-    render->SetCharacterSizePixels(20);
+    render->SetCharacterSizePixels(18);
     render->SetFont("Bookerly-Regular.ttf");
 
     return ent;
@@ -147,10 +147,8 @@ void GameBoard::HandleEvent(sf::Event event)
         // printf("released \n");
         if (m_dragging)
         {
-            if (m_dragging->GetPos().x > 100)
+            if (m_dragging->GetPos().x > 100 && CheckDragging())
             {
-                CheckDragging();
-                dragged.push_back(m_dragging);
             }
             else
                 GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
@@ -163,15 +161,18 @@ void GameBoard::HandleEvent(sf::Event event)
     }
 }
 
-void GameBoard::CheckDragging()
+bool GameBoard::CheckDragging()
 {
     sf::Vector2f dpos = m_dragging->GetPos();
     sf::Vector2f dsize = m_dragging->GetSize();
 
-    for (GameEngine::Entity *word : dragged)
+    for (GameEngine::Entity *word : boxes)
     {
         sf::Vector2f wpos = word->GetPos();
         sf::Vector2f wsize = word->GetSize();
+
+        wpos.x -= 25;
+        wpos.y -= 12;
 
         bool lx = wpos.x <= dpos.x && dpos.x <= wpos.x + wsize.x;
         bool rx = wpos.x <= dpos.x + dsize.x && dpos.x + dsize.x <= wpos.x + wsize.x;
@@ -180,9 +181,11 @@ void GameBoard::CheckDragging()
 
         if ((lx && ty) || (lx && by) || (rx && ty) || (rx && by))
         {
-            Merge(word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString(), m_dragging->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString());
+            m_dragging->SetPos(wpos);
+            return true;
         }
     }
+    return false;
 }
 
 void GameBoard::Merge(std::string a, std::string b)
