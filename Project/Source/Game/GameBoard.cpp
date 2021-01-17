@@ -76,13 +76,13 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
 {
     GameEngine::Entity *ent = new GameEngine::Entity();
     GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
-    words.push_back(ent);
 
-    ent->SetSize(sf::Vector2f(100.f, 20.f));
+    ent->SetSize(sf::Vector2f(50.f, 10.f));
     if (x == -1)
     {
-        ent->SetPos(sf::Vector2f(20.f, 20.f + m_words * 30));
+        ent->SetPos(sf::Vector2f(20.f, 20.f + m_words * 15));
         m_words++;
+        words.push_back(ent);
     }
     else
     {
@@ -93,7 +93,7 @@ GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
     render->SetString(word);
     render->SetColor(sf::Color::White);
     render->SetFillColor(sf::Color::Transparent);
-    render->SetCharacterSizePixels(18);
+    render->SetCharacterSizePixels(10);
     render->SetFont("Bookerly-Regular.ttf");
 
     return ent;
@@ -129,17 +129,22 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
+            x = x - 50;
+            y = y - 44;
+
             printf("a %d %d\n", x, y);
 
-            int i = 1;
+            int i = 0;
             for (GameEngine::Entity *word : words)
             {
                 sf::Vector2f pos = word->GetPos();
                 sf::Vector2f size = word->GetSize();
+                printf("%f %f %f %f\n", pos.x, pos.y, size.x, size.y);
 
-                if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
+                if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 20) <= y && y <= (pos.y + size.y + i * 20))
                 {
                     std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                    printf("found %s\n", s.c_str());
                     m_dragging = MakeWord(s, pos.x, pos.y);
                 }
 
@@ -154,9 +159,10 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseMove.x;
             int y = event.mouseMove.y;
 
-            m_dragging->SetPos(sf::Vector2f((x + 38.43569) / 1.61404 - 50, (y - 5.90485) / 1.19912 - 10));
+            // m_dragging->SetPos(sf::Vector2f((x + 76.87138) / 3.22808 - 50, (y - 11.8097) / 2.39824 - 10));
+            m_dragging->SetPos(sf::Vector2f(x, y));
 
-            // printf("b %d %d\n", x, m_dragging->GetPos().x);
+            printf("b %f %f\n", m_dragging->GetPos().x, m_dragging->GetPos().y);
         }
         break;
     case sf::Event::MouseButtonReleased:

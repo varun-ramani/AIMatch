@@ -11,7 +11,7 @@ int main()
 	// WordVectors::ServerComm serverComm("https://localhost:5000");
 
 	sf::Window *window = mainEngine->GetRenderWindow();
-	window->create(sf::VideoMode(800, 600), "Glovechemy", sf::Style::Titlebar | sf::Style::Close);
+	window->create(sf::VideoMode(1600, 1200), "Glovechemy", sf::Style::Titlebar | sf::Style::Close);
 
 	while (mainEngine->GetRenderWindow()->isOpen())
 	{
