@@ -50,10 +50,10 @@ def analogy():
 
     result = vectors.analogy(first, second, third, 1)[0]
 
-    if result[1] < 0.52:
+    if result[1] < 0.48:
         result = vectors.analogy(second, first, third, 1)[0]
 
-        if result[1] < 0.55:
+        if result[1] < 0.52:
             return "FAIL"
 
     return result[0]
