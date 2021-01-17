@@ -230,4 +230,10 @@ bool GameBoard::CheckDragging()
 
 void GameBoard::LoseLife()
 {
+    GameEngine::GameEngineMain::GetInstance()->RemoveEntity(lives[livesn-- - 1]);
+
+    if (livesn == 0)
+    {
+        printf("Game over!\n");
+    }
 }

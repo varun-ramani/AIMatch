@@ -27,7 +27,7 @@ namespace Game
 		GameEngine::Entity *MakeWord(std::string word, int x = -1, int y = -1);
 		void MakeBox(float x, float y);
 		GameEngine::Entity *MakeWall(float x, float y, float width, float height, sf::Color color = sf::Color::White);
-		bool IsGameOver() { return false; }
+		bool IsGameOver() { return livesn == 0; }
 		bool CheckDragging();
 		void LoseLife();
 
