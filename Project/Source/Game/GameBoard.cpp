@@ -122,7 +122,10 @@ void GameBoard::HandleEvent(sf::Event event)
         break;
     case sf::Event::MouseButtonReleased:
         if (m_dragging->GetPos().x > 150)
+        {
+            CheckDragging();
             dragged.push_back(m_dragging);
+        }
         else
             GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
 
@@ -133,6 +136,29 @@ void GameBoard::HandleEvent(sf::Event event)
     }
 }
 
+void GameBoard::CheckDragging()
+{
+    sf::Vector2f dpos = m_dragging->GetPos();
+    sf::Vector2f dsize = m_dragging->GetSize();
+
+    for (GameEngine::Entity *word : dragged)
+    {
+        sf::Vector2f wpos = word->GetPos();
+        sf::Vector2f wsize = word->GetSize();
+
+        bool lx = wpos.x <= dpos.x && dpos.x <= wpos.x + wsize.x;
+        bool rx = wpos.x <= dpos.x + dsize.x && dpos.x + dsize.x <= wpos.x + wsize.x;
+        bool ty = wpos.y <= dpos.y && dpos.y <= wpos.y + wsize.y;
+        bool by = wpos.y <= dpos.y + dsize.y && dpos.y + dsize.y <= wpos.y + wsize.y;
+
+        if ((lx && ty) || (lx && by) || (rx && ty) || (rx && by))
+        {
+            Merge(word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString(), m_dragging->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString());
+        }
+    }
+}
+
 void GameBoard::Merge(std::string a, std::string b)
 {
+    printf("merging %s %s\n", a.c_str(), b.c_str());
 }

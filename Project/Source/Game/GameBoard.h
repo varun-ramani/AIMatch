@@ -23,6 +23,7 @@ namespace Game
 		GameEngine::Entity *MakeWord(std::string word, int x = -1, int y = -1);
 		void MakeWall(float x, float y, float width, float height);
 		bool IsGameOver() { return false; }
+		void CheckDragging();
 		void Merge(std::string a, std::string b);
 
 	private:
