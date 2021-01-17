@@ -100,18 +100,17 @@ void GameBoard::HandleEvent(sf::Event event)
             }
         }
         break;
-    case sf::Event::MouseButtonReleased:
-        m_dragging = nullptr;
-        break;
     case sf::Event::MouseMoved:
         if (m_dragging)
         {
-            std::cout << "hi\n";
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
             m_dragging->SetPos(sf::Vector2f(x, y));
         }
+        break;
+    case sf::Event::MouseButtonReleased:
+        m_dragging = nullptr;
         break;
     default:
         break;
