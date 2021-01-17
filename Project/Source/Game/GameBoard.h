@@ -34,8 +34,9 @@ namespace Game
 		std::vector<GameEngine::Entity *> words;
 		std::vector<GameEngine::Entity *> boxes;
 		GameEngine::Entity *dragged[3];
+		GameEngine::Entity *lives[5];
 		GameEngine::Entity *m_dragging;
 		int m_words;
-		WordVectors::ServerComm server = WordVectors::ServerComm("https://localhost:5000");
+		WordVectors::ServerComm server = WordVectors::ServerComm("http://localhost:5000");
 	};
 } // namespace Game
