@@ -120,7 +120,7 @@ void GameBoard::Update()
         animframe++;
         if (animframe % 10 == 0)
         {
-            Shake(anim[(animframe / 10) % 20]);
+            Shake(anim[(animframe / 10) % 40]);
             if (animframe > animmax)
             {
                 animframe = -1;
@@ -187,7 +187,6 @@ void GameBoard::HandleEvent(sf::Event event)
         }
 
         m_dragging = nullptr;
-        LoseLife();
         break;
     default:
         break;
@@ -231,6 +230,13 @@ bool GameBoard::CheckDragging()
 
                 std::string result = server.getWordAnalogy(a, b, c);
                 printf("Got back %s\n", result.c_str());
+
+                for (int q = 0; q < 3; q++)
+                {
+                    GameEngine::GameEngineMain::GetInstance()->RemoveEntity(dragged[q]);
+                    dragged[q] = nullptr;
+                }
+                return true;
             }
             m_dragging->SetPos(wpos);
 
