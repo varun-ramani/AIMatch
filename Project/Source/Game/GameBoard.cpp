@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
@@ -84,6 +85,8 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
+            // printf("a %d %d\n", x, y);
+
             int i = 1;
             for (GameEngine::Entity *word : words)
             {
@@ -106,7 +109,9 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseMove.x;
             int y = event.mouseMove.y;
 
-            m_dragging->SetPos(sf::Vector2f(x, y));
+            m_dragging->SetPos(sf::Vector2f((x + 38.43569) / 1.61404 - 50, (y - 5.90485) / 1.19912 - 10));
+
+            // printf("b %d %d\n", x, m_dragging->GetPos().x);
         }
         break;
     case sf::Event::MouseButtonReleased:
