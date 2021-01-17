@@ -31,34 +31,31 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
     for (int j = 0; j < strs.size(); j++)
     {
         std::string s = strs[j];
-
-        GameEngine::Entity *ent = new GameEngine::Entity();
-        GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
-        words.push_back(ent);
-
-        ent->SetPos(sf::Vector2f(20.f, 20.f + i * 30));
-        ent->SetSize(sf::Vector2f(100.f, 20.f));
-
-        GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
-        render->SetString(s);
-        render->SetColor(sf::Color::White);
-        render->SetFillColor(sf::Color::Black);
-        render->SetCharacterSizePixels(20);
-        render->SetFont("Bookerly-Regular.ttf");
-
-        // std::cout << s;
-        // std::cout << "\n";
+        MakeWord(s, 20.f, 20.f + i * 30);
 
         i++;
     }
 
-    // MakeWall(75.f, 15.f, 130.f, 5.f);
-    // MakeWall(75.f, 215.f, 130.f, 5.f);
-    // MakeWall(15.f, 100.f, 5.f, 200.f);
     MakeWall(150.f, 100.f, 5.f, 500.f);
+}
 
-    // std::cout << sf::Mouse::getPosition().x;
-    // std::cout << "\n";
+GameEngine::Entity *GameBoard::MakeWord(std::string word, float x, float y)
+{
+    GameEngine::Entity *ent = new GameEngine::Entity();
+    GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
+    words.push_back(ent);
+
+    ent->SetPos(sf::Vector2f(x, y));
+    ent->SetSize(sf::Vector2f(100.f, 20.f));
+
+    GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
+    render->SetString(word);
+    render->SetColor(sf::Color::White);
+    render->SetFillColor(sf::Color::Black);
+    render->SetCharacterSizePixels(20);
+    render->SetFont("Bookerly-Regular.ttf");
+
+    return ent;
 }
 
 void GameBoard::MakeWall(float x, float y, float width, float height)
@@ -87,13 +84,33 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
+            int i = 1;
             for (GameEngine::Entity *word : words)
             {
-                // if ()
+                sf::Vector2f pos = word->GetPos();
+                sf::Vector2f size = word->GetSize();
+
+                if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
+                {
+                    std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                    std::cout << s;
+                    std::cout << "\n";
+
+                    m_dragging = MakeWord(s, pos.x, pos.y);
+                }
+
+                i++;
             }
         }
         break;
     case sf::Event::MouseMoved:
+        if (m_dragging)
+        {
+            int x = event.mouseButton.x;
+            int y = event.mouseButton.y;
+
+            m_dragging->SetPos(sf::Vector2f(x, y));
+        }
         break;
     }
 }

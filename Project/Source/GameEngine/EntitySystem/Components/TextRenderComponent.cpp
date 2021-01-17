@@ -14,7 +14,7 @@ TextRenderComponent::~TextRenderComponent()
 {
 }
 
-void TextRenderComponent::Render(sf::RenderTarget* target)
+void TextRenderComponent::Render(sf::RenderTarget *target)
 {
     RenderComponent::Render(target);
 
@@ -40,7 +40,7 @@ void TextRenderComponent::SetFont(std::string fontFile)
     filePath.append(fontFile);
     if (!m_font.loadFromFile(filePath))
     {
-        assert(false);  // Drop an assert if we are loading a font that doesn't exist;
+        assert(false); // Drop an assert if we are loading a font that doesn't exist;
     }
 
     m_text.setFont(m_font);
@@ -74,4 +74,9 @@ void TextRenderComponent::SetStyle(sf::Text::Style style, bool value)
         styleBitField &= 0 << style;
     }
     m_text.setStyle(styleBitField);
+}
+
+sf::Text TextRenderComponent::GetString()
+{
+    return m_text;
 }
