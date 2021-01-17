@@ -34,5 +34,6 @@ namespace Game
 		std::vector<GameEngine::Entity *> dragged;
 		GameEngine::Entity *m_dragging;
 		int m_words;
+		GameEngine::Entity *arrow;
 	};
 } // namespace Game

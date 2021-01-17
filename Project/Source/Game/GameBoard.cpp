@@ -9,6 +9,8 @@
 #include "GameEngine/GameEngineMain.h"
 #include "Game/Player/PlayerMovementComponent.h"
 #include "GameEngine/EntitySystem/Components/TextRenderComponent.h"
+#include "GameEngine/EntitySystem/Components/SpriteRenderComponent.h"
+#include "GameEngine/Util/TextureManager.h"
 
 using namespace Game;
 
@@ -37,18 +39,21 @@ void GameBoard::SpawnWords(std::vector<std::string> strs)
         MakeWord(s);
     }
 
-    MakeWall(150.f, 100.f, 5.f, 500.f);
+    MakeWall(100.f, 100.f, 5.f, 500.f);
 
-    for (int i = 0; i < 3; i++)
-    {
-        MakeBox(300 + 100 * i, 200);
-    }
+    MakeBox(150, 200);
+    MakeWord("K", 194, 185)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
+    MakeBox(250, 200);
+    MakeWord("=", 294, 185);
+    MakeBox(350, 200);
+    MakeWord("K", 394, 185)->GetComponent<GameEngine::TextRenderComponent>()->SetFont("Arrows ADF.ttf");
+    MakeBox(450, 200);
 }
 
 void GameBoard::MakeBox(float x, float y)
 {
-    MakeWall(x, y, 100, 50);
-    MakeWall(x + 2, y + 2, 96, 46, sf::Color::Black);
+    MakeWall(x, y, 75, 50);
+    MakeWall(x, y, 71, 46, sf::Color::Black);
 }
 
 GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
@@ -83,8 +88,8 @@ GameEngine::Entity *GameBoard::MakeWall(float x, float y, float width, float hei
     GameEngine::Entity *ent = new GameEngine::Entity();
     GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
 
-    ent->SetPos(sf::Vector2f(x, y));
     ent->SetSize(sf::Vector2f(width, height));
+    ent->SetPos(sf::Vector2f(x, y));
 
     GameEngine::RenderComponent *render = ent->AddComponent<GameEngine::RenderComponent>();
     render->SetFillColor(color);
@@ -108,7 +113,7 @@ void GameBoard::HandleEvent(sf::Event event)
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
-            // printf("a %d %d\n", x, y);
+            printf("a %d %d\n", x, y);
 
             int i = 1;
             for (GameEngine::Entity *word : words)
@@ -142,7 +147,7 @@ void GameBoard::HandleEvent(sf::Event event)
         // printf("released \n");
         if (m_dragging)
         {
-            if (m_dragging->GetPos().x > 150)
+            if (m_dragging->GetPos().x > 100)
             {
                 CheckDragging();
                 dragged.push_back(m_dragging);

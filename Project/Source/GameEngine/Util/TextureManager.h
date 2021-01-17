@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <stdio.h>
+#include <iostream>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -11,6 +13,7 @@ namespace GameEngine
 		enum type
 		{
 			None = -1,
+			Arrow = 0,
 
 			Count,
 		};
@@ -18,7 +21,13 @@ namespace GameEngine
 
 	inline const char *GetPath(eTexture::type texture)
 	{
-		return "UnknownTexType";
+		switch (texture)
+		{
+		case eTexture::Arrow:
+			return "images.png";
+		default:
+			return "UnknownTexType";
+		}
 	}
 
 	class TextureManager
@@ -35,7 +44,11 @@ namespace GameEngine
 		void LoadTextures();
 		void UnLoadTextures();
 
-		sf::Texture *GetTexture(eTexture::type texture) const { return m_textures[(int)texture]; }
+		sf::Texture *GetTexture(eTexture::type texture) const
+		{
+			printf("loading %d\n", texture);
+			return m_textures[(int)texture];
+		}
 
 	private:
 		TextureManager();
