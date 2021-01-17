@@ -28,26 +28,32 @@ GameBoard::~GameBoard()
 
 void GameBoard::SpawnWords(std::vector<std::string> strs)
 {
-    int i = 0;
+    m_words = 0;
     for (int j = 0; j < strs.size(); j++)
     {
         std::string s = strs[j];
-        MakeWord(s, 20.f, 20.f + i * 30);
-
-        i++;
+        MakeWord(s);
     }
 
     MakeWall(150.f, 100.f, 5.f, 500.f);
 }
 
-GameEngine::Entity *GameBoard::MakeWord(std::string word, float x, float y)
+GameEngine::Entity *GameBoard::MakeWord(std::string word, int x, int y)
 {
     GameEngine::Entity *ent = new GameEngine::Entity();
     GameEngine::GameEngineMain::GetInstance()->AddEntity(ent);
     words.push_back(ent);
 
-    ent->SetPos(sf::Vector2f(x, y));
     ent->SetSize(sf::Vector2f(100.f, 20.f));
+    if (x == -1)
+    {
+        ent->SetPos(sf::Vector2f(20.f, 20.f + m_words * 30));
+        m_words++;
+    }
+    else
+    {
+        ent->SetPos(sf::Vector2f(x, y));
+    }
 
     GameEngine::TextRenderComponent *render = ent->AddComponent<GameEngine::TextRenderComponent>();
     render->SetString(word);
@@ -125,4 +131,8 @@ void GameBoard::HandleEvent(sf::Event event)
     default:
         break;
     }
+}
+
+void GameBoard::Merge(std::string a, std::string b)
+{
 }
