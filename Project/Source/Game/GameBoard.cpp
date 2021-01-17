@@ -93,9 +93,6 @@ void GameBoard::HandleEvent(sf::Event event)
                 if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
                 {
                     std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
-                    std::cout << s;
-                    std::cout << "\n";
-
                     m_dragging = MakeWord(s, pos.x, pos.y);
                 }
 
@@ -103,14 +100,20 @@ void GameBoard::HandleEvent(sf::Event event)
             }
         }
         break;
+    case sf::Event::MouseButtonReleased:
+        m_dragging = nullptr;
+        break;
     case sf::Event::MouseMoved:
         if (m_dragging)
         {
+            std::cout << "hi\n";
             int x = event.mouseButton.x;
             int y = event.mouseButton.y;
 
             m_dragging->SetPos(sf::Vector2f(x, y));
         }
+        break;
+    default:
         break;
     }
 }
