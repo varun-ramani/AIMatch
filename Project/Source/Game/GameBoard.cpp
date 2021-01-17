@@ -77,52 +77,60 @@ void GameBoard::Update()
 
 void GameBoard::HandleEvent(sf::Event event)
 {
+    std::cout << "Handling event" << std::endl;
     switch (event.type)
     {
-    case sf::Event::MouseButtonPressed:
-        if (event.mouseButton.button == sf::Mouse::Left)
-        {
-            int x = event.mouseButton.x;
-            int y = event.mouseButton.y;
-
-            // printf("a %d %d\n", x, y);
-
-            int i = 1;
-            for (GameEngine::Entity *word : words)
+        case sf::Event::MouseButtonPressed:
+            std::cout << "Handling mouse button pressed" << std::endl;
+            if (event.mouseButton.button == sf::Mouse::Left)
             {
-                sf::Vector2f pos = word->GetPos();
-                sf::Vector2f size = word->GetSize();
+                int x = event.mouseButton.x;
+                int y = event.mouseButton.y;
 
-                if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
+                // printf("a %d %d\n", x, y);
+
+                int i = 1;
+                for (GameEngine::Entity *word : words)
                 {
-                    std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
-                    m_dragging = MakeWord(s, pos.x, pos.y);
+                    sf::Vector2f pos = word->GetPos();
+                    sf::Vector2f size = word->GetSize();
+
+                    if ((pos.x) <= x && x <= (pos.x + size.x) && (pos.y + i * 10) <= y && y <= (pos.y + size.y + i * 10))
+                    {
+                        std::string s = word->GetComponent<GameEngine::TextRenderComponent>()->GetString().getString();
+                        m_dragging = MakeWord(s, pos.x, pos.y);
+                    }
+
+                    i++;
                 }
-
-                i++;
             }
-        }
-        break;
-    case sf::Event::MouseMoved:
-        if (m_dragging)
-        {
-            int x = event.mouseMove.x;
-            int y = event.mouseMove.y;
+            std::cout << "Done handling mouse button pressed" << std::endl;
+            break;
+        case sf::Event::MouseMoved:
+            std::cout << "Handling mouse moved" << std::endl;
+            if (m_dragging)
+            {
+                int x = event.mouseMove.x;
+                int y = event.mouseMove.y;
 
-            m_dragging->SetPos(sf::Vector2f((x + 38.43569) / 1.61404 - 50, (y - 5.90485) / 1.19912 - 10));
+                m_dragging->SetPos(sf::Vector2f((x + 38.43569) / 1.61404 - 50, (y - 5.90485) / 1.19912 - 10));
 
-            // printf("b %d %d\n", x, m_dragging->GetPos().x);
-        }
-        break;
-    case sf::Event::MouseButtonReleased:
-        if (m_dragging->GetPos().x > 150)
-            dragged.push_back(m_dragging);
-        else
-            GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
+                // printf("b %d %d\n", x, m_dragging->GetPos().x);
+            }
+            std::cout << "Done handling mouse moved" << std::endl;
+            break;
+        case sf::Event::MouseButtonReleased:
+            std::cout << "Handling mouse button released" << std::endl;
+            if (m_dragging->GetPos().x > 150)
+                dragged.push_back(m_dragging);
+            else
+                GameEngine::GameEngineMain::GetInstance()->RemoveEntity(m_dragging);
 
-        m_dragging = nullptr;
-        break;
-    default:
+            m_dragging = nullptr;
+            break;
+            std::cout << "Done handling button released" << std::endl;
+        default:
         break;
     }
+    std::cout << "Done handling event" << std::endl;
 }
