@@ -332,7 +332,7 @@ void GameBoard::MakeResult(std::string res)
 
     std::random_device rand_dev;
     std::mt19937 generator(rand_dev());
-    std::uniform_real_distribution<float> distribution(0.0, 1.0);
+    std::uniform_real_distribution<float> distribution(-1.0, 1.0);
 
     for (int i = 0; i < 50; i++)
     {
