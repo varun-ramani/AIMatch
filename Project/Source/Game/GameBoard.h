@@ -31,6 +31,7 @@ namespace Game
 		bool CheckDragging();
 		void LoseLife();
 		void Shake(int i);
+		void MakeResult(std::string result);
 
 	private:
 		std::vector<GameEngine::Entity *> words;
